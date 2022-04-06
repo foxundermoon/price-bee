@@ -35,10 +35,11 @@ client.setInterval(async () => {
 
 
 		await client.user.setActivity(
-			`$${parseFloat(utils.formatEther(pb)).toFixed(5)}`,
+			`Apollo Price`
+			,
 			{ type: 'WATCHING' },
 		)
-		await client.user.setUsername(`Apollo Price`)
+		await client.user.setUsername(`$${parseFloat(utils.formatEther(pb)).toFixed(5)}`)
 
 	} catch (e) {
 		console.error(e)
