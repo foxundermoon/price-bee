@@ -33,12 +33,13 @@ client.setInterval(async () => {
 		//   await botMember.setNickname(`${symbol}: $${numberWithCommas(price)}`)
 		// })
 
-		await client.user.setUsername(`$${parseFloat(utils.formatEther(pb)).toFixed(5)}`)
 
 		await client.user.setActivity(
-			`Price`,
+			`$${parseFloat(utils.formatEther(pb)).toFixed(5)}`,
 			{ type: 'WATCHING' },
 		)
+		await client.user.setUsername(`Apollo Price`)
+
 	} catch (e) {
 		console.error(e)
 	}
