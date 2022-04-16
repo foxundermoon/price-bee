@@ -12,8 +12,13 @@ dotenv.config()
 
 const client = new Client()
 
+const bscClient = new Client();
+
 // eslint-disable-next-line
 client.on('ready', () => console.log(`Bot successfully started as ${client.user.tag} 🐝`))
+
+bscClient.on('ready', () => console.log(`Bot successfully started as ${bscClient.user.tag} 🐝`))
+
 
 // Updates token price on bot's nickname every X amount of time
 client.setInterval(async () => {
@@ -35,7 +40,7 @@ client.setInterval(async () => {
 
 
 		await client.user.setActivity(
-			`Apollo Price`
+			`Metis Apollo Price`
 			,
 			{ type: 'WATCHING' },
 		)
@@ -45,6 +50,31 @@ client.setInterval(async () => {
 		console.error(e)
 	}
 
-}, 1 * 60 * 1000)
+	try {
 
-client.login(process.env.DISCORD_API_TOKEN)
+		const price = await fetch('https://api-apollo.vercel.app/api/chain/apolloinfo?chainId=56&name=Apollo&func=getCurrentPrice&dt=object&contract=0x087244b18FdCa438248655D443ea58bFd4253b53').then(x => x.json());
+
+		const pb = BigNumber.from(price.price);
+		console.log(price);
+
+		// client.guilds.cache.forEach(async (guild) => {
+		//   const botMember = guild.me
+		//   await botMember.setNickname(`${symbol}: $${numberWithCommas(price)}`)
+		// })
+
+
+		await bscClient.user.setActivity(
+			`BSC Apollo Price`
+			,
+			{ type: 'WATCHING' },
+		)
+		await bscClient.user.setUsername(`$${parseFloat(utils.formatEther(pb)).toFixed(5)}`)
+	} catch (e) {
+		console.error(e)
+	}
+
+}, 31 * 60 * 1000)
+
+client.login(process.env.DISCORD_API_TOKEN);
+
+bscClient.login(process.env.DISCORD_API_TOKEN_BSC);
